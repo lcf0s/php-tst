@@ -1,0 +1,58 @@
+{
+	"tasks": [
+		{
+			"username": "user1",
+			"email": "user1@epochta.rus",
+			"text": "some text",
+			"isDone": false
+		},
+		{
+			"username": "user1x",
+			"email": "userxaaa1@epochta.rus",
+			"text": "some text!!!",
+			"isDone": false
+		},
+		{
+			"username": "user2",
+			"email": "user2@epochta.rus",
+			"text": "some text",
+			"isDone": true
+		},
+		{
+			"username": "duder3",
+			"email": "user3@quantumpochta.rus",
+			"text": "some text",
+			"isDone": true
+		},
+		{
+			"username": "cuser4",
+			"email": "cuser4@epochta.rus",
+			"text": "some text",
+			"isDone": false
+		},
+		{
+			"username": "user5",
+			"email": "user5@epochta.rus",
+			"text": "some text",
+			"isDone": false
+		},
+		{
+			"username": "user6",
+			"email": "user1@epochta.rus",
+			"text": "some text",
+			"isDone": true
+		},
+		{
+			"username": "user7",
+			"email": "user7007@epochta.rus",
+			"text": "some text",
+			"isDone": true
+		},
+		{
+			"username": "Wa_user",
+			"email": "Wa_usrX@yandex.ru",
+			"text": "some text",
+			"isDone": true
+		}
+	]
+}
