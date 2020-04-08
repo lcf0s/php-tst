@@ -1,4 +1,7 @@
 <?php
+ob_start();
+session_start();
+
 require_once("./tasksData.php");
 require_once("./tasksViewer.php");
 
@@ -10,25 +13,32 @@ class Controller
 	private $model;
 	private $tasks;
 	public $sortingField;
-
+	
 	public function __construct() {
 		$this->model = new Model();
 		$this->tasks = $this->model->getTasks(); 
+		$this->sortOrder = true;
 	}
 	
 	public function sortByField() {
 		// simple sorting
 		usort($this->tasks, function($a, $b) {
-			if ($a[$this->sortingField] < $b[$this->sortingField]) {
+			if ($_SESSION['sortOrder'] ? 
+				$a[$this->sortingField] < $b[$this->sortingField] :
+				$a[$this->sortingField] > $b[$this->sortingField]) {
 				return -1;
 			}
 
-			if ($a[$this->sortingField] > $b[$this->sortingField]) {
+			if ($_SESSION['sortOrder'] ? 
+				$a[$this->sortingField] > $b[$this->sortingField] : 
+				$a[$this->sortingField] < $b[$this->sortingField]) {
 				return 1;
 			}
 
 			return 0;
 		});
+		
+		$_SESSION['sortOrder'] = !$_SESSION['sortOrder'];
 
 		return $this->tasks;
 	}
@@ -38,7 +48,7 @@ class Controller
 	}
 
 	public function editTasks($username, $email, $text, $isDone) {
-		$this->model->editTasks($username, $email, $text, $isDone);
+		return $this->model->editTasks($username, $email, $text, $isDone);
 	}
 
 }
@@ -63,17 +73,29 @@ if($_POST['source'] == 'status') {
 
 // sending the response for addTask requests
 if($_POST['source'] == 'addTask') {
-	print $tasksViewer->populateControl($controller->addTask(
+	if ($_POST['username'] != '' && strlen($_POST['username']) >= 2 && strlen($_POST['username']) <= 44 &&
+			$_POST['email'] != '' && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) &&
+			$_POST['text'] != '' && strlen($_POST['text']) >= 3 && strlen($_POST['text']) <= 1024) {
+				print $tasksViewer->populateControl($controller->addTask(
 											$_POST['username'], 
 											$_POST['email'], 
 											$_POST['text'], 
-											false));
+											false,
+											$_POST['isTextChanged']));
+         } else {
+            print 'Wrong data! Fields must not be empty. 2-44 symbols; email format; 3-1024 symbols';
+         }
+
+	
 }
 
 
 // admin edits requests
+$msg = '';
 if($_POST['source'] == 'edit') {
-	$controller->editTasks($_POST['username'], $_POST['email'], $_POST['text'], $_POST['isDone']);
+	if (isset($_SESSION['username'])) {
+		print $controller->editTasks($_POST['username'], $_POST['email'], $_POST['text'], $_POST['isDone'], $_POST['isTextChanged']);
+	}
 }
 
 

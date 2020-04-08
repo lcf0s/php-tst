@@ -21,7 +21,8 @@ class Model
 		    'username' => $username,
 		    'email' => $email,
 		    'text' => $text,
-		    'isDone' => $isDone
+		    'isDone' => $isDone,
+		    'isTextChanged' => 'false'
 		);
 
 		file_put_contents("data/tasks.json", json_encode($toUpdate));
@@ -31,16 +32,22 @@ class Model
 
 	public function editTasks($username, $email, $text, $isDone) {
 		$toUpdate = $this->tasks;
+		$isTextChanged = false;
 
-		//$toUpdate[0]['username'] = $username;
 		foreach ($toUpdate["tasks"] as $key => $entry) {
 			if ($entry['username'] == $username && $entry['email'] == $email) {
-				$toUpdate["tasks"][$key]['text'] = $text;
+				if ($toUpdate["tasks"][$key]['text'] != $text) {
+					$toUpdate["tasks"][$key]['text'] = $text;
+					$toUpdate["tasks"][$key]['isTextChanged'] = 'true';
+					$isTextChanged = true;
+				} 
 				$toUpdate["tasks"][$key]['isDone'] = json_encode($isDone);
 			}
 		}
 
 		file_put_contents("data/tasks.json", json_encode($toUpdate));
+
+		return $isTextChanged;
 	}
 
 }

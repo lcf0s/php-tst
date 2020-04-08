@@ -1,6 +1,8 @@
 <?php
 ob_start();
 session_start();
+
+$_SESSION['sortOrder'] = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,13 +38,14 @@ session_start();
 	?>
 
 	<div class="input-group mb-3 newTask">
+		<input type="text" name="username" id="username" class="form-control newTask__username" required minlength="2" maxlength="44" title="В этом поле допускают 2-44 символа" />
 		<label class="input-group-text" for="username">username</label>
-		<input type="text" name="username" class="form-control newTask__username" required minlength="2" maxlength="44" />
+		<input type="email" name="email" id="email" class="form-control newTask__email" title="В этом поле допускают формат email" required />
 		<label class="input-group-text" for="email">email</label>
-		<input type="email" name="email" class="form-control newTask__email" required />
+		<input type="text" name="text" id="text" class="form-control newTask__text" required spellcheck="true" minlength="3" maxlength="1024" title="В этом поле допускают 3-1024 символа"  />
 		<label class="input-group-text" for="text">text</label>
-		<input type="text" name="text" class="form-control newTask__text" required minlength="3" maxlength="1024" />
 		<button class="btn-block btn addTask" value="addTask">Add Task</button>
+		<div class="wrongData"></div>
 	</div>
 
 </div>

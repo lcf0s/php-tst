@@ -6,6 +6,7 @@ let getEmail = '';
 let elType = null;
 let getText = null;
 let getCheckbox = null;
+let getAdminEdited = null;
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -48,21 +49,31 @@ document.addEventListener("DOMContentLoaded", function() {
 			fetch("tasks.php", { method: "POST", body: formData, 
 								 mode: "same-origin", credentials: "same-origin" })
 				.then(res => res.text()).then(data => {
-					document.getElementsByClassName("tasks")[0].innerHTML = data;
-
 					// update the pages count on new task creation
 					if (btn.value === 'addTask') {
-						length = Math.ceil(document.getElementsByClassName("tasks")[0].children.length / 3);
-						pages = '';
+						if (!data.startsWith('Wrong')) {
+							document.getElementsByClassName("tasks")[0].innerHTML = data;
 
-						for (let i=1; i <= length; i++) 
-							pages += `<li class="page-item"><a class="page-link page-num" href="#">${i}</a></li>`
-						
-						tasksPages.innerHTML = pages;
-						addPagesClickEvent();
-					}
+							length = Math.ceil(document.getElementsByClassName("tasks")[0].children.length / 3);
+							pages = '';
+
+							for (let i=1; i <= length; i++) 
+								pages += `<li class="page-item"><a class="page-link page-num" href="#">${i}</a></li>`
+							
+							tasksPages.innerHTML = pages;
+							addPagesClickEvent();
+
+							const done = document.createElement('div');
+							done.innerText = 'Добавлено. ';
+							addTask.after(done);
+							document.getElementsByClassName("wrongData")[0].innerText = '';
+						} else {
+							document.getElementsByClassName("wrongData")[0].innerText = data;
+						}
+					} else 
+						document.getElementsByClassName("tasks")[0].innerHTML = data;
 			}).catch(err => {
-				console.error("unable to fetch data: " + btn.value)
+				console.error("unable to fetch data: " + err)
 			});
 		});
 	});
@@ -93,6 +104,7 @@ function updateTask(el) {
 	getEmail = el.closest("li").querySelector("div:nth-child(2)").innerText;
 	getText = el.closest("li").querySelector("div:nth-child(3) > input").value;
 	getCheckbox = el.closest("li").querySelector("div:nth-child(4) > input").checked;
+	getAdminEdited = el.closest("li").querySelector("div:nth-child(5)");
 	
 	formData.set("source", "edit");
 	formData.set("username", getUsername);
@@ -102,6 +114,10 @@ function updateTask(el) {
 
 	fetch("tasks.php", { method: "POST", body: formData, 
 						 mode: "same-origin", credentials: "same-origin" })
+	.then(res => res.text()).then(data => {
+		if (data) 
+			getAdminEdited.innerHTML = "отредактировано администратором";
+	})
 	.catch(err => {
 		console.error("unable to fetch data: " + err.message)
 	});

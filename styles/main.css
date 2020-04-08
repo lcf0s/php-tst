@@ -30,40 +30,29 @@ h2{
    display: inline-block;
 }
 
+.newTask {
+   margin-top: 50px;
+}
 
 
-input[value=""]+label:before {
+input[type=email]:invalid + label::after,
+input[type=email]:-moz-ui-invalid + label::after,
+input[type=email]:user-error + label::after,
+input[type=email]:user-invalid + label::after {
+  content: "E-mail не валиден";
+  white-space: nowrap;
+  position: absolute;
+  left: -100%;
+  top: -100%;
+  padding: 3px;
+  color: salmon;
+  border: 1px dotted red;
+}
+
+label {
+  position: relative;
+}
+
+label::after {
    color: green;
-   content: "===";
-}
-input[type=email]:invalid {
-   color: red;
-   content: "email не валиден";display: block;
-}
-input[type=email]:valid+label:before {
-   color: blue;
-   content: "email";display: none;
-}
-/*input[type=email]:required+label:before, input[type=email]:focus:required+label:before {
-   color: green;
-   content: "===";
-}
-input[type=email]+label:before,
-input[type=email]:valid+label:before, input[type=email]:focus:valid+label:before { {
-   color: green;
-   content: "---";
-}
-input[type=email]:invalid+label:before, input[type=email]:focus:invalid+label:before {
-   position: absolute;
-   top: -20px;
-   left: 0;
-   content: "email не валиден";
-   white-space: nowrap;
-   font-size: 12px;
-   color: red;display: block;
-}
-*/
-
-input[type=text]:invalid+label:after, input[type=text]:focus:invalid+label:after {
-
 }
