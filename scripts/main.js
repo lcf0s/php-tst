@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	formData.append("isDone", null);
 	
 	tasks = document.getElementsByClassName("tasks")[0].children;
+	const wrongData = document.getElementsByClassName("wrongData")[0];
 
 	// page-number buttons
 	const tasksPages = document.getElementsByClassName("tasksPages")[0];
@@ -66,9 +67,9 @@ document.addEventListener("DOMContentLoaded", function() {
 							const done = document.createElement('div');
 							done.innerText = 'Добавлено. ';
 							addTask.after(done);
-							document.getElementsByClassName("wrongData")[0].innerText = '';
+							wrongData.innerHTML = '';
 						} else {
-							document.getElementsByClassName("wrongData")[0].innerText = data;
+							wrongData.innerHTML = "Wrong data! Fields must not be empty. 2-44 symbols; email format";
 						}
 					} else 
 						document.getElementsByClassName("tasks")[0].innerHTML = data;
